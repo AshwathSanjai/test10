@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Animated Continuous Bubble Background</title>
+<style>
+  body, html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: transparent;
+  }
+  #background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+  }
+  @keyframes bubbleAnimation {
+  0% {
+    transform: translateY(0) rotate(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-120vh) rotate(360deg);
+    opacity: 0;
+  }
+}
+
+.bubble {
+  position: absolute;
+  border-radius: 50%;
+  opacity: 0.8;
+}
+
+</style>
+</head>
+<body>
+<div id="background"></div>
+<script>
+const background = document.getElementById('background');
+const numBubbles = 100; // Increased number of bubbles
+const colors = ['#ff6b6b', '#48dbfb', '#1dd1a1', '#feca57', '#ff9ff3', '#f368e0'];
+
+function generateBubble() {
+  const bubble = document.createElement('div');
+  bubble.classList.add('bubble');
+  bubble.style.background = getRandomColor();
+  const size = Math.random() * 30 + 20; // Small bubbles
+  if (Math.random() < 0.5) {
+    bubble.style.width = `${size * 5}px`; // Large bubbles (50%)
+    bubble.style.height = `${size * 5}px`;
+  } else {
+    bubble.style.width = `${size}px`; // Small bubbles
+    bubble.style.height = `${size}px`;
+  }
+  const top = Math.random() * 100;
+  const left = Math.random() * 100;
+  bubble.style.top = `${top}%`;
+  bubble.style.left = `${left}%`;
+  const duration = Math.random() * 3 + 1; // Decreased duration for faster animation
+  bubble.style.animation = `bubbleAnimation ${duration}s linear`;
+  background.appendChild(bubble);
+  
+  bubble.addEventListener('animationend', () => {
+    background.removeChild(bubble);
+    generateBubble();
+  });
+}
+
+function getRandomColor() {
+  return colors[Math.floor(Math.random() * colors.length)];
+}
+
+function init() {
+  for (let i = 0; i < numBubbles; i++) {
+    generateBubble();
+  }
+}
+
+init();
+
+  </script>
+</body>
+</html>
